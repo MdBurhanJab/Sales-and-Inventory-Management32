@@ -2,6 +2,7 @@ package generic_Utility;
 
 import java.io.IOException;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -17,8 +18,8 @@ import org.testng.annotations.Parameters;
 
 import com.beust.jcommander.Parameter;
 
-import vitger_Object_Respority.Homepage;
-import vitger_Object_Respority.LoginPage;
+import objectRepository.AdminHomePage;
+
 
 public class BaseClass {
 
@@ -37,7 +38,7 @@ public class BaseClass {
 	
 	  //@Parameters(value ="browser") // for cross Browser testing
       //@BeforeTest
-	@BeforeClass(groups ={"smoke","regression"})
+	@BeforeClass
 	public void bcConfig(/*String Browser*/) throws IOException {
 		String Browser = ps.ToReadDatafromPropertyfile("browser");
 		String URL = ps.ToReadDatafromPropertyfile("url");
@@ -56,28 +57,29 @@ public class BaseClass {
 		driver.get(URL);
 	} 
 
-	@BeforeMethod(groups ={"smoke","regression"})
+	@BeforeMethod
 	public void bmConfig() throws IOException {
-		String Username = ps.ToReadDatafromPropertyfile("username");
-		String Password = ps.ToReadDatafromPropertyfile("password");
-		LoginPage li = new LoginPage(driver);
-		li.getUsernameTextfield().sendKeys(Username);
-		li.getPasswordTextfield().sendKeys(Password);
-		li.getLoginbutton().click();
-	}
-
-	@AfterMethod(groups ={"smoke","regression"})
-	public void amConfig() {
-		Homepage hp = new Homepage(driver);
+		String Username = ps.ToReadDatafromPropertyfile("adminId");
+		String Password = ps.ToReadDatafromPropertyfile("adminPass");
+		objectRepository.LoginPage lp=new objectRepository.LoginPage(driver);
+		lp.LogintoApp(Username, Password);
+		ws.tohandlepopupandAccept(driver);
 		
 	}
 
-	@AfterClass(groups ={"smoke","regression"})
+	@AfterMethod
+	public void amConfig() {
+		AdminHomePage ahp=new AdminHomePage(driver);
+		ahp.logoutFromAdmin();
+		
+	}
+
+	@AfterClass
 	public void acConfig() {
 		driver.quit();
 	}
 
-	@AfterTest(groups ={"smoke","regression"})
+	@AfterTest
 	public void atConfig() {
 		System.out.println("-------database Connection disconnected");
 	}

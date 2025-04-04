@@ -32,5 +32,12 @@ public class LoginPage {
 		return submitButton;
 	}
 	
+	//bussiness library
+	public void LogintoApp(String uName,String password) {
+		getUserName().sendKeys(uName);
+		getPassword().sendKeys(password);
+		getSubmitButton().click();
+	}
+	
 	
 }

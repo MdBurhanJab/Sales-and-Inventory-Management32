@@ -15,7 +15,7 @@ public class Property_File_Utility {
 	 */
 	
 	public String ToReadDatafromPropertyfile(String key) throws IOException {
-		FileInputStream fid = new FileInputStream(".\\src\\test\\resources\\commonfolder.properties");
+		FileInputStream fid = new FileInputStream(".\\src\\test\\resources\\CommonData.properties");
 		Properties ps = new Properties();
 		ps.load(fid);
 		String value = ps.getProperty(key);
